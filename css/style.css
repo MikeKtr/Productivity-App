@@ -1,7 +1,43 @@
+@property --p {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
 * {
   box-sizing: border-box;
   font-family: "Kanit", sans-serif;
   font-weight: 600;
+}
+
+.background {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: -1;
+  --p: 0%;
+}
+
+.bg1 {
+  transform: translate(calc(var(--p)));
+  background-color: #111;
+}
+
+.bg2 {
+  transform: translate(calc(var(--p) + 100%));
+  background-color: #222;
+  display: none;
+}
+
+.bg3 {
+  transform: translate(calc(var(--p) + 200%));
+  background-color: #333;
+  display: none;
+}
+
+.bg4 {
+  transform: translate(calc(var(--p) + 300%));
+  background-color: #444;
+  display: none;
 }
 
 body {
@@ -12,24 +48,20 @@ body {
   width: 100vw;
   margin: 0;
   padding: 0;
-  background-color: #111;
 }
 
 .left {
   height: 100%;
   width: 30%;
-  background-color: #444;
 }
 
 .main {
   height: 100%;
   width: 40%;
-  background-color: #222;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: flex-start;
-  padding-top: 5%;
   align-items: center;
   gap: 20px;
 }
@@ -38,6 +70,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
 }
 .main .buttons {
   width: 25%;
@@ -181,6 +214,68 @@ body {
 
 .show {
   transform: translateY(0%);
+}
+
+.bgc-navigation {
+  position: absolute;
+  bottom: 10px;
+  width: 400px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding-left: 40px;
+}
+.bgc-navigation > div {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transition: all 2s;
+}
+.bgc-navigation i {
+  color: black;
+  width: 80%;
+  height: 80%;
+  font-size: 30px;
+  margin-top: 20%;
+}
+
+.go-left,
+.go-right,
+.mute {
+  width: 50px;
+  height: 50px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+.theme {
+  width: 200px;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 25px;
+  font-size: 30px;
+}
+
+.arrow-left {
+  margin-right: 10px;
+  width: 0;
+  height: 0;
+  border-right: 25px solid black;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+}
+
+.arrow-right {
+  margin-left: 10px;
+  width: 0;
+  height: 0;
+  border-left: 25px solid black;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
 }
 
 @keyframes flip_top {

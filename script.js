@@ -1,14 +1,16 @@
-var time = 10;
+var time = 5;
 var breakTime = 2;
 var isWork = true;
 var previousMinutesTens = -1;
 var previousMinutesUnity = -1;
 var previousSecondsTens = -1;
 var countdownTimer = null;
-var StartTime = 25 * 60;
+var StartTime = time;
+var StartBreak = breakTime;
 const StartButton = document.querySelector(".start");
 const SettingPopup = document.querySelector(".settings-popup");
 const SaveButton = document.querySelector(".submit");
+
 function getTimeSegmentElements(segmentElement) {
 	const segmentDisplay = segmentElement.querySelector(".segment-display");
 	const segmentDisplayTop = segmentElement.querySelector(
@@ -101,11 +103,15 @@ function FinishCountdown() {
 	if (isWork == true) {
 		UpdateTimer(breakTime);
 		isWork = false;
+		time = StartTime;
 	} else {
-		isWrok = true;
+		isWork = true;
 		UpdateTimer(time);
+		breakTime = StartBreak;
 	}
 }
+
+UpdateTimer(time);
 
 StartButton.addEventListener("click", () => {
 	if (StartButton.classList.contains("stop")) {
@@ -117,8 +123,17 @@ StartButton.addEventListener("click", () => {
 		StartButton.classList.add("stop");
 		StartButton.innerHTML = "Stop";
 		countdownTimer = setInterval(() => {
-			time = time - 1;
-			UpdateTimer(time);
+			console.log(isWork);
+			if (time == 0 || breakTime == 0) {
+				FinishCountdown();
+			}
+			if (isWork) {
+				time = time - 1;
+				UpdateTimer(time);
+			} else {
+				breakTime = breakTime - 1;
+				UpdateTimer(breakTime);
+			}
 		}, 1000);
 	}
 });
@@ -141,6 +156,14 @@ document.querySelector(".settings").addEventListener("click", () => {
 });
 
 SaveButton.addEventListener("click", () => {
+	const WorkTimeMins = parseInt(document.querySelector(".work-time-min").value);
+	const WorkTimeSec = parseInt(document.querySelector(".work-time-sec").value);
+	const BreakTimeMin = parseInt(
+		document.querySelector(".break-time-min").value
+	);
+	const BreakTimeSec = parseInt(
+		document.querySelector(".break-time-sec").value
+	);
 	time =
 		parseInt(document.querySelector(".work-time-min").value) * 60 +
 		parseInt(document.querySelector(".work-time-sec").value);
@@ -151,3 +174,15 @@ SaveButton.addEventListener("click", () => {
 	StartTime = time;
 	SettingPopup.classList.remove("show");
 });
+
+document.querySelector(".go-right").addEventListener("click", () => {
+	bgcs = document.querySelectorAll(".background");
+	bgcs.forEach((bgc) => {
+		bgc.style.setProperty("--p", "-100%");
+		document.querySelector(".bg2").style.display = "block";
+		document.querySelector(".bg1").style.display = "none";
+	});
+	document.querySelector(".bg2").style.display = "block";
+	document.querySelector(".bg1").style.display = "none";
+});
+document.querySelector(".go-left").addEventListener("click", () => {});
