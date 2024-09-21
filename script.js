@@ -1,6 +1,6 @@
-var time = 25 * 60;
-var breakTime = 5 * 60;
-
+var time = 10;
+var breakTime = 2;
+var isWork = true;
 var previousMinutesTens = -1;
 var previousMinutesUnity = -1;
 var previousSecondsTens = -1;
@@ -95,6 +95,16 @@ function UpdateTimer(timeInSec) {
 
 	seconds = timeInSec % 60;
 	UpdateTimeSection("seconds", seconds);
+}
+
+function FinishCountdown() {
+	if (isWork == true) {
+		UpdateTimer(breakTime);
+		isWork = false;
+	} else {
+		isWrok = true;
+		UpdateTimer(time);
+	}
 }
 
 StartButton.addEventListener("click", () => {
