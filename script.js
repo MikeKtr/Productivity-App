@@ -7,9 +7,15 @@ var previousSecondsTens = -1;
 var countdownTimer = null;
 var StartTime = time;
 var StartBreak = breakTime;
+var CurrentBG = 0;
+var volume = 0.1;
 const StartButton = document.querySelector(".start");
 const SettingPopup = document.querySelector(".settings-popup");
 const SaveButton = document.querySelector(".submit");
+const Backgrounds = document.querySelectorAll(".background");
+const ButtonLeft = document.querySelector(".go-left");
+const ButtonRight = document.querySelector(".go-right");
+const Title = document.querySelector(".title-of-bg");
 
 function getTimeSegmentElements(segmentElement) {
 	const segmentDisplay = segmentElement.querySelector(".segment-display");
@@ -112,6 +118,10 @@ function FinishCountdown() {
 }
 
 UpdateTimer(time);
+var sound = new Audio("/css/Rain.mp3");
+sound.loop = true;
+sound.volume = 0.1;
+sound.play();
 
 StartButton.addEventListener("click", () => {
 	if (StartButton.classList.contains("stop")) {
@@ -175,14 +185,74 @@ SaveButton.addEventListener("click", () => {
 	SettingPopup.classList.remove("show");
 });
 
-document.querySelector(".go-right").addEventListener("click", () => {
-	bgcs = document.querySelectorAll(".background");
-	bgcs.forEach((bgc) => {
-		bgc.style.setProperty("--p", "-100%");
-		document.querySelector(".bg2").style.display = "block";
-		document.querySelector(".bg1").style.display = "none";
+Backgrounds.forEach((Background) => {
+	Background.addEventListener("transitionend", () => {
+		ButtonRight.disabled = false;
+		ButtonLeft.disabled = false;
 	});
-	document.querySelector(".bg2").style.display = "block";
-	document.querySelector(".bg1").style.display = "none";
 });
-document.querySelector(".go-left").addEventListener("click", () => {});
+
+function ChangeNameOfBG(nr) {
+	if (nr == 0) {
+		Title.innerHTML = "Rainy Day";
+		console.log(sound);
+		sound.pause();
+		sound.currentTime = 0;
+		sound = new Audio("/css/Rain.mp3");
+		sound.loop = true;
+		sound.volume = volume;
+		sound.play();
+	} else if (nr == 1) {
+		Title.innerHTML = "Fireplace";
+		console.log(sound);
+		sound.pause();
+		sound = new Audio("/css/Fireplace.mp3");
+		sound.currentTime = 0;
+		sound.loop = true;
+		sound.volume = volume;
+		sound.play();
+	} else if (nr == 2) {
+		Title.innerHTML = "Busy Town";
+		console.log(sound);
+		sound.pause();
+		sound = new Audio("/css/Town.mp3");
+		sound.currentTime = 0;
+		sound.loop = true;
+		sound.volume = volume;
+		sound.play();
+	} else if (nr == 3) {
+		Title.innerHTML = "Meadow";
+		sound.pause();
+		sound = new Audio("/css/Meadow.mp3");
+		sound.currentTime = 0;
+		sound.loop = true;
+		sound.volume = volume;
+		sound.play();
+	}
+}
+
+ButtonRight.addEventListener("click", () => {
+	ButtonRight.disabled = true;
+	if (CurrentBG < 3) {
+		Backgrounds[CurrentBG].style.width = "0%";
+		Backgrounds[CurrentBG].style.right = "none";
+		Backgrounds[CurrentBG].style.left = "0";
+		CurrentBG += 1;
+		Backgrounds[CurrentBG].style.width = "100%";
+		ChangeNameOfBG(CurrentBG);
+	}
+});
+ButtonLeft.addEventListener("click", () => {
+	ButtonLeft.disabled = true;
+	if (CurrentBG > 0) {
+		Backgrounds[CurrentBG].style.left = "auto";
+		Backgrounds[CurrentBG].style.right = "0";
+		Backgrounds[CurrentBG].style.width = "0%";
+
+		CurrentBG -= 1;
+		Backgrounds[CurrentBG].style.width = "100%";
+		Backgrounds[CurrentBG].style.left = "none";
+		Backgrounds[CurrentBG].style.right = "0";
+		ChangeNameOfBG(CurrentBG);
+	}
+});
